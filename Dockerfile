@@ -1,5 +1,5 @@
 FROM ubuntu:20.04
-MAINTAINER admin
+
 RUN echo "Europe/Berlin" > /etc/timezone
 ENV DEBIAN_FRONTEND=noninteractive
 # Configuration variables.
