@@ -5,7 +5,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Configuration variables.
 ENV JIRA_HOME     /var/atlassian/jira
 ENV JIRA_INSTALL  /opt/atlassian/jira
-ENV JIRA_VERSION  8.12.0
+ENV JIRA_VERSION  7.10.1
 
 # Install Atlassian JIRA and helper tools and setup initial home
 # directory structure.
@@ -16,14 +16,14 @@ RUN apt-get update  \
 &&  apt-get install sudo -y \
 &&  apt-get install ufw -y \
 &&  apt-get install wget -y \
-&&  sudo /usr/sbin/useradd --create-home --comment "Account for running JIRA Software" --shell /bin/bash jira \
+#&&  sudo /usr/sbin/useradd --create-home --comment "Account for running JIRA Software" --shell /bin/bash jira \
 &&  apt-get install openjdk-8-jre -y \
 &&  apt-get install mysql-server -y \
     &&  apt-get install mysql-client -y \
     && mkdir -p                "${JIRA_HOME}" \
     && mkdir -p                "${JIRA_HOME}/caches/indexes" \
     && chmod -R 700            "${JIRA_HOME}" \
-    && chown -R daemon:daemon  "${JIRA_HOME}" \
+    && chown -R jira:jira  "${JIRA_HOME}" \
     && mkdir -p                "${JIRA_INSTALL}/conf/Catalina" \
     && curl -Ls                "https://www.atlassian.com/software/jira/downloads/binary/atlassian-jira-software-8.12.0.tar.gz" | tar -xz --directory "${JIRA_INSTALL}" --strip-components=1 --no-same-owner \
     && curl -Ls                "https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.38.tar.gz" | tar -xz --directory "${JIRA_INSTALL}/lib" --strip-components=1 --no-same-owner "mysql-connector-java-5.1.38/mysql-connector-java-5.1.38-bin.jar" \
@@ -31,10 +31,10 @@ RUN apt-get update  \
     && chmod -R 700            "${JIRA_INSTALL}/logs" \
     && chmod -R 700            "${JIRA_INSTALL}/temp" \
     && chmod -R 700            "${JIRA_INSTALL}/work" \
-    && chown -R daemon:daemon  "${JIRA_INSTALL}/conf" \
-    && chown -R daemon:daemon  "${JIRA_INSTALL}/logs" \
-    && chown -R daemon:daemon  "${JIRA_INSTALL}/temp" \
-    && chown -R daemon:daemon  "${JIRA_INSTALL}/work" \
+    && chown -R jira:jira  "${JIRA_INSTALL}/conf" \
+    && chown -R jira:jira  "${JIRA_INSTALL}/logs" \
+    && chown -R jira:jira  "${JIRA_INSTALL}/temp" \
+    && chown -R jira:jira  "${JIRA_INSTALL}/work" \
     && sed --in-place          "s/java version/openjdk version/g" "${JIRA_INSTALL}/bin/check-java.sh" \
     && echo -e                 "\njira.home=$JIRA_HOME" >> "${JIRA_INSTALL}/atlassian-jira/WEB-INF/classes/jira-application.properties" \
     && touch -d "@0"           "${JIRA_INSTALL}/conf/server.xml"
@@ -57,4 +57,4 @@ WORKDIR /var/atlassian/jira
 
 
 # Run Atlassian JIRA as a foreground process by default.
-CMD ["/opt/atlassian/jira/bin/start-jira.sh", "-fg"]
+#CMD ["/opt/atlassian/jira/bin/start-jira.sh", "-fg"]
