@@ -10,7 +10,6 @@ ENV JIRA_VERSION  8.12.0
 # Install Atlassian JIRA and helper tools and setup initial home
 # directory structure.
 RUN set -x \
-    && apk add --no-cache curl xmlstarlet bash ttf-dejavu libc6-compat \
     && sudo /usr/sbin/useradd --create-home --comment "Account for running JIRA Software" --shell /bin/bash jira \
     && apt-get install openjdk-8-jre \
     && apt-get install mysql-server \
