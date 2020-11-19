@@ -9,11 +9,17 @@ ENV JIRA_VERSION  8.12.0
 
 # Install Atlassian JIRA and helper tools and setup initial home
 # directory structure.
-RUN set -x \
-    && sudo /usr/sbin/useradd --create-home --comment "Account for running JIRA Software" --shell /bin/bash jira \
-    && apt-get install openjdk-8-jre \
-    && apt-get install mysql-server \
-    && apt-get install mysql-client \
+RUN apt-get update  \
+&&  apt-get install curl -y \
+&&  apt-get install net-tools -y \
+&&  apt-get install nano -y \
+&&  apt-get install sudo -y \
+&&  apt-get install ufw -y \
+&&  apt-get install wget -y \
+&&  sudo /usr/sbin/useradd --create-home --comment "Account for running JIRA Software" --shell /bin/bash jira \
+&&  apt-get install openjdk-8-jre -y \
+&&  apt-get install mysql-server -y \
+    &&  apt-get install mysql-client -y \
     && mkdir -p                "${JIRA_HOME}" \
     && mkdir -p                "${JIRA_HOME}/caches/indexes" \
     && chmod -R 700            "${JIRA_HOME}" \
