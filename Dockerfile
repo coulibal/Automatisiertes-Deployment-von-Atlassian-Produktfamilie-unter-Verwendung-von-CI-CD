@@ -38,7 +38,7 @@ RUN apt-get update  \
 # Use the default unprivileged account. This could be considered bad practice
 # on systems where multiple processes end up being executed by 'daemon' but
 # here we only ever run one process anyway.
-USER daemon:daemon
+USER jira:jira
 
 # Expose default HTTP connector port.
 EXPOSE 8444
