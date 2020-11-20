@@ -1,0 +1,5 @@
+releases:
+  - name: atlassian-jira-software
+    namespace: devops
+    chart: ./atlassian-jira-software
+    

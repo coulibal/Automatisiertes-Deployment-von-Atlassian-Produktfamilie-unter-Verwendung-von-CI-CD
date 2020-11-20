@@ -1,0 +1,40 @@
+# https://github.com/coulibal/Automatisiertes-Deployment-von-Atlassian-Produktfamilie-unter-Verwendung-von-CI-CD
+
+image:
+  repository: fcouliba/automatisiertes-deployment-von-atlassian-produktfamilie
+  tag: 7.10.1
+  pullPolicy: IfNotPresent
+
+jira:
+  javaHeapSize: 1024m
+  javaMemoryOptions: "-XX:MaxMetaspaceSize=512m -XX:MaxDirectMemorySize=10m"
+  javaOptions: ""
+
+service:
+  type: ClusterIP
+  port: 8444
+
+ingress:
+  enabled: false
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  path: /
+  hosts:
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 8Gi
+  # existingClaim: existing-pvc
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
