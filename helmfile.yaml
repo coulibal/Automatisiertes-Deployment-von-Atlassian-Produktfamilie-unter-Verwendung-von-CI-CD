@@ -2,4 +2,7 @@ releases:
   - name: atlassian-jira-software
     namespace: devops
     chart: ./atlassian-jira-software
-    
+
+  - name: atlassian-confluence
+    namespace: devops
+    chart: ./atlassian-confluence
