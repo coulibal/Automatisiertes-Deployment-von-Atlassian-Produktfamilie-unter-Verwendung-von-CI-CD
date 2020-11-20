@@ -1,11 +1,11 @@
 apiVersion: v1
 version: 0.1.0
-appVersion: 8.12.0
-description: Project Management Tool for Agile Teams.
-name: atlassian-jira-software
+appVersion: 7.9.0
+description: Enterprise Wiki Collaboration Platform.
+name: atlassian-confluence
 keywords:
 - atlassian
-- jira
-home: https://www.atlassian.com/software/jira
+- confluence
+home: https://www.atlassian.com/software/confluence
 sources:
 - https://github.com/coulibal/Automatisiertes-Deployment-von-Atlassian-Produktfamilie-unter-Verwendung-von-CI-CD
