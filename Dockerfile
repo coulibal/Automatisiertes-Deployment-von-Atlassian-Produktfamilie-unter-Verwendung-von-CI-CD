@@ -7,6 +7,10 @@ ENV JIRA_HOME     /var/atlassian/jira
 ENV JIRA_INSTALL  /opt/atlassian/jira
 ENV JIRA_VERSION  8.12.0
 
+ENV CONF_HOME     /var/atlassian/confluence
+ENV CONF_INSTALL  /opt/atlassian/confluence
+ENV CONF_VERSION  7.9.0
+
 # Install Atlassian JIRA and helper tools and setup initial home
 # directory structure.
 RUN apt-get update  \
@@ -17,6 +21,7 @@ RUN apt-get update  \
 &&  apt-get install ufw -y \
 &&  apt-get install wget -y \
 &&  sudo /usr/sbin/useradd --create-home --comment "Account for running JIRA Software" --shell /bin/bash jira \
+&&sudo /usr/sbin/useradd --create-home --comment "Account for running Confluence" --shell /bin/bash confluence \
 &&  apt-get install openjdk-8-jre -y \
 &&  apt-get install mysql-server -y \
     &&  apt-get install mysql-client -y \
@@ -33,12 +38,26 @@ RUN apt-get update  \
     && chmod -R u=rwx,go-rwx  "${JIRA_INSTALL}" \
     && sed --in-place          "s/java version/openjdk version/g" "${JIRA_INSTALL}/bin/check-java.sh" \
     && echo -e                 "\njira.home=$JIRA_HOME" >> "${JIRA_INSTALL}/atlassian-jira/WEB-INF/classes/jira-application.properties" \
-    && touch -d "@0"           "${JIRA_INSTALL}/conf/server.xml"
+    && touch -d "@0"           "${JIRA_INSTALL}/conf/server.xml"\
+#Confluece Configuration
+&& mkdir -p                "${CONF_HOME}" \
+&& chmod -R 700            "${CONF_HOME}" \
+&& chown -R confluence:confluence  "${CONF_HOME}" \
+&& chmod -R u=rwx,go-rwx "${CONF_HOME}" \
+&& chmod -R o-x "${CONF_HOME}" \
+&& mkdir -p                "${CONF_INSTALL}/conf" \
+&& curl -Ls               "https://www.atlassian.com/software/confluence/downloads/binary/atlassian-confluence-${CONF_VERSION}.tar.gz" | tar -xz --directory "${CONF_INSTALL}" --strip-components=1 --no-same-owner \
+&& cp "${CONF_INSTALL}/lib/mysql-connector-java-5.1.38-bin.jar" "${CONF_INSTALL}/confluence/WEB-INF/lib" \
+&& chown -R confluence:confluence  "${CONF_INSTALL}" \
+&& chmod -R u=rwx,go-rwx  "${CONF_INSTALL}" \
+&& echo -e                 "\nconfluence.home=$CONF_HOME" >> "${CONF_INSTALL}/confluence/WEB-INF/classes/confluence-init.properties" \
+&& touch -d "@0"           "${CONF_INSTALL}/conf/server.xml" \
+
 
 # Use the default unprivileged account. This could be considered bad practice
 # on systems where multiple processes end up being executed by 'daemon' but
 # here we only ever run one process anyway.
-USER jira:jira
+USER daemon:daemon
 
 # Expose default HTTP connector port.
 EXPOSE 8444
@@ -51,8 +70,7 @@ VOLUME ["/var/atlassian/jira", "/opt/atlassian/jira/logs"]
 # Set the default working directory as the installation directory.
 WORKDIR /var/atlassian/jira
 
-#COPY "docker-entrypoint.sh" "/"
-#ENTRYPOINT ["/docker-entrypoint.sh"]
+VOLUME ["/var/atlassian/confluence", "/opt/atlassian/confluence/logs"]
 
 # Run Atlassian JIRA as a foreground process by default.
-CMD ["/opt/atlassian/jira/bin/start-jira.sh", "-fg"]
+#CMD ["/opt/atlassian/jira/bin/start-jira.sh", "-fg"]
