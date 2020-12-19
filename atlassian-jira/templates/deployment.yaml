@@ -44,7 +44,7 @@ spec:
               value: {{ printf "-Xmx%s -Xms%s %s %s" .Values.jira.javaHeapSize .Values.jira.javaHeapSize .Values.jira.javaMemoryOptions .Values.jira.javaOptions | quote }}
           ports:
             - name: http
-              containerPort: 8444
+              containerPort: 8080
               protocol: TCP
           livenessProbe:
             tcpSocket:
