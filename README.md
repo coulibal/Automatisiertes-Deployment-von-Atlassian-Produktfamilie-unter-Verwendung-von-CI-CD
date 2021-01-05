@@ -6,6 +6,7 @@ https://github.com/coulibal/docker-atlassian-jira-software : Docker-Datei zum Ko
 https://github.com/coulibal/docker-atlassian-confluence-software  :Dockerfile zum Konfigurieren von Atlassian confluence
 
 https://hub.docker.com/r/fcouliba/atlassian-jira-8.12.0  :Docker Image Atlassian Jira
+
 https://hub.docker.com/r/fcouliba/atlassian-confluence-7.9.0 :Docker Image Atlassian Confluence
 
 Youtube Demo-Link:
